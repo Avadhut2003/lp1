@@ -398,3 +398,75 @@ public class PriorityNonPreemptive {
 	}
 }
 ********************************************************************************************
+//According to my logic this is new ccode.
+import java.io.*;
+import java.util.*;
+public class fcfs {
+    public void sort_the(int[] arr,int n,int[] BT){
+        int temp;
+        int temp1;
+        for(int i=0;i<n;i++){
+           for(int j = i+1; j < n ; j++){
+                if(arr[i]>arr[j]){
+                    temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                    temp1 = BT[i];
+                    BT[i] = BT[j];
+                    BT[j] = temp1;
+                    System.out.println("Procees p["+i+"]"+"is at new location" + j);
+                } 
+           }
+        }
+
+    }
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+      fcfs obj = new fcfs();
+         
+        System.out.println("**********************************************");
+        System.out.println("Eneter Number of procecess :");
+        int no_pr = input.nextInt();
+        int[] BT = new int[no_pr];
+        int[] AT = new int[no_pr];
+        int[] FT = new int[no_pr];
+        int[] TAT = new int[no_pr];
+        int[] WT = new int[no_pr];
+        System.out.println("**********************************************");
+        System.out.println("Enter Arrival Time and Burst Time for process :");
+        for (int i = 0; i < no_pr; i++) {
+            System.out.print("P" + (i ) + "\t");
+            AT[i] = input.nextInt();
+            BT[i] = input.nextInt();
+            System.out.println();
+        }
+        System.out.println("**********************************************");
+        System.out.println("Enter Arrival Time and Burst Time for process :");
+        obj.sort_the(AT,no_pr,BT);
+        for (int i = 0; i < no_pr ; i++ ){
+            System.out.println(AT[i] + "\t"+BT[i]);
+        }
+        System.out.println("**********************************************");
+        System.out.println("Finished time :");
+        FT[0] = BT[0];
+        for(int i = 1; i < no_pr ; i++){
+            FT[i] = FT[i-1] + BT[i]; 
+        }
+        for (int i = 0; i < no_pr ; i++){
+            TAT[i] = FT[i] - AT[i];
+            System.out.println(FT[i]);
+        }
+        System.out.println("**********************************************");
+        System.out.println("Turnaround Time :");
+        for (int i = 0; i < no_pr ; i++ ){
+            System.out.println(TAT[i]);
+        }
+        System.out.println("**********************************************");
+        System.out.println("Waiting Time :");
+        for (int i = 0; i < no_pr ; i++ ){
+            WT[i] = TAT[i] - BT[i];
+            System.out.println(WT[i]);
+        }
+    }   
+}
