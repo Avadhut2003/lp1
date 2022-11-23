@@ -321,3 +321,156 @@ public class LRU {
  * hit ratio: 0.4166666666666667
  */
 ******************************************************************************************
+//According to my logic:
+
+//FCFS
+import java.util.Scanner;
+public class FCFS {
+public static boolean is_present(int n, int frame[], int f) {
+int flag = 0;
+for (int i = 0; i < f; i++) {
+if (frame[i] == n) {
+flag = 1;
+break;
+}
+}
+if (flag == 1) {
+return true;
+} else
+return false;
+}
+public void execute() {
+int s, no_frame, pagefault;
+int hits = 0;
+int p = 0;
+Scanner sc = new Scanner(System.in);
+System.out.print("Enter number of pages :");
+s = sc.nextInt();
+int[] sequence = new int[s];
+System.out.println("Enter sequence :");
+for (int i = 0; i < s; i++) {
+sequence[i] = sc.nextInt();
+}
+System.out.print("Enter number of frames :");
+no_frame = sc.nextInt();
+pagefault = 0;
+int[] frame = new int[no_frame];
+for (int i = 0; i < no_frame; i++) {
+frame[i] = -1;
+}
+System.out.println();
+for (int i = 0; i < s; i++) {
+if (!is_present(sequence[i], frame, no_frame)) {
+if (p < no_frame) {
+frame[p] = sequence[i];
+p++;
+} else {
+p = 0;
+frame[p] = sequence[i];
+p++;
+}
+pagefault++;
+for (int k = 0; k < no_frame; k++) {
+System.out.print(frame[k] + "\t");
+}
+System.out.println();
+} else {
+hits++;
+for (int k = 0; k < no_frame; k++) {
+System.out.print(frame[k] + "\t");
+}
+System.out.println();
+}
+}
+System.out.println("Faults :" + pagefault);
+System.out.println("Hits :" + hits);
+sc.close();
+}
+}
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//Optimal Search
+public static boolean is_present(int n,int frame[],int f){
+int flag = 0;
+for(int i = 0; i < f ; i++){
+if(frame[i] == n){
+flag = 1;
+break;
+}
+}
+if (flag == 1) {
+return true;
+}
+else
+return false;
+}
+public int search(int[] frame, int no_frame, int[] sequence, int s, int j) {
+int flag = 0;
+int min = 127;
+for (int i = 0; i < no_frame; i++) {
+flag = 0;
+for (int k = no_frame; k < s; k++) {
+if (frame[i] == sequence[k]) {
+flag = 1;
+if(i < min ){
+min = i;
+}
+}
+}
+if(flag == 0){
+return i;
+}
+}
+return min;
+}
+public void execute(){
+Scanner sc = new Scanner(System.in);
+int s;
+System.out.print("Enter the number of pages: ");
+s = sc.nextInt();
+int[] sequence = new int[s];
+System.out.println("Enter the page no. :");
+for(int i=0;i<s;i++)
+{
+sequence[i] = sc.nextInt();
+}
+int no_frame;
+System.out.print("Enter the number of frames: ");
+no_frame = sc.nextInt();
+int pagefault = no_frame,hits=0;
+int[] frame = new int[no_frame];
+for(int i=0;i<no_frame;i++)
+{
+frame[i]=sequence[i];
+}
+int count = 0;
+for(int i=1;i<no_frame;i++)
+{
+for(int j = 0 ; j < i ;j++){
+if(frame[i]==sequence[j]){
+count = count + 1;
+}
+}
+}
+pagefault = pagefault - count;
+hits = count;
+for (int i = no_frame; i <s; i++ ){
+if(!is_present(sequence[i], frame, no_frame)){
+frame[search(frame , no_frame,sequence,s,i)] = sequence[i];
+pagefault++;
+for(int k = 0 ; k < no_frame; k++){
+System.out.print(frame[k] + "\t");
+}
+System.out.println();
+}
+else{
+hits++;
+for(int k = 0 ; k < no_frame; k++){
+System.out.print(frame[k] + "\t");
+}
+System.out.println();
+}
+}
+System.out.println("Faults :" + pagefault);
+System.out.println("Hits :" + hits);
+sc.close();
+}
